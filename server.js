@@ -6,7 +6,15 @@ const io = require("socket.io")(server);
 const PORT = 3000;
 
 app.get("/", (req, res) => {
-  res.send("chatApp");
+  res.sendFile(__dirname + "/index.html");
+});
+
+io.on("connection", (socket) => {
+  console.log("ユーザーが接続しました");
+
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
 });
 
 server.listen(PORT, () => {
